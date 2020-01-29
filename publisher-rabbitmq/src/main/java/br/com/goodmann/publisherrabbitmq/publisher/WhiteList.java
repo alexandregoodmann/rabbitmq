@@ -1,24 +1,10 @@
-package br.com.goodmann.consumerrabbitmq.model;
-
-import java.math.BigInteger;
+package br.com.goodmann.publisherrabbitmq.publisher;
 
 public class WhiteList {
-
-	// @Id
-	// @GeneratedValue(strategy = GenerationType.AUTO)
-	private BigInteger id;
 
 	private String client;
 
 	private String regex;
-
-	public BigInteger getId() {
-		return id;
-	}
-
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
 
 	public String getClient() {
 		return client;

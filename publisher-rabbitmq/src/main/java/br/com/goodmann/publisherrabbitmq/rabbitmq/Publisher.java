@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import br.com.goodmann.publisherrabbitmq.publisher.WhiteList;
+
 @Component
 public class Publisher {
 
@@ -21,9 +23,9 @@ public class Publisher {
 	@Value("${VALIDATION_QUEUE}")
 	private String validationQueue;
 
-	public void add(String msg) {
-		amqpTemplate.convertAndSend(this.insertionQueue, msg);
-		logger.info("[Mensagem ADD para RebbitMQ] - " + msg);
+	public void add(WhiteList obj) {
+		amqpTemplate.convertAndSend(this.insertionQueue, obj);
+		logger.info("[Mensagem ADD para RebbitMQ] - " + obj);
 	}
 
 	public void validate(String msg) {
