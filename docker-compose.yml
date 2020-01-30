@@ -34,7 +34,7 @@ services:
 #RabbitMQ
   rabbitmq:
     image: "rabbitmq:3-management"
-    
+       
 # Volumes
 volumes:
   db-data:
