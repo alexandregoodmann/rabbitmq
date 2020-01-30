@@ -1,2 +1,2 @@
 docker-compose down
-docker rmi rabbitmq_app-server
+docker rmi rabbitmq_publisher rabbitmq_consumer

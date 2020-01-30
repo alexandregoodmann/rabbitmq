@@ -1,39 +1,23 @@
-version: '3.7'
-
-#Microservico
+version: '3'
 services:
-  app-server:
-    build:
-      context: consumer-rabbitmq
-      dockerfile: Dockerfile
+  publisher:
+    build: publisher-rabbitmq/
     ports:
-      - "8081:8081" 
-    depends_on: 
-      - db
+      - "8080:8080"
+    depends_on:
       - rabbitmq
     network_mode: "host"
-
-#MySql
-  db:
-    image: mysql:latest
+    
+  consumer:
+    build: consumer-rabbitmq/
     ports:
-      - "3306:3306"
-    restart: always
-    environment:
-      MYSQL_DATABASE: rabbitmq
-      MYSQL_USER: root
-      MYSQL_PASSWORD: mysql
-      MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - db-data:/var/lib/mysql 
-
-#RabbitMQ
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+    network_mode: "host"
+    
   rabbitmq:
-    image: "rabbitmq:3-management"
+    image: rabbitmq:management
     ports:
-       - 5672:5672
-       - 15672:15672   
-       
-# Volumes
-volumes:
-  db-data:
+      - "5672:5672"
+      - "15672:15672"
