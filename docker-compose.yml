@@ -8,14 +8,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8081" 
-    restart: always
     depends_on: 
       - db
       - rabbitmq
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/rabbitmq?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: mysql
+    network_mode: "host"
 
 #MySql
   db:
@@ -34,6 +30,9 @@ services:
 #RabbitMQ
   rabbitmq:
     image: "rabbitmq:3-management"
+    ports:
+       - 5672:5672
+       - 15672:15672   
        
 # Volumes
 volumes:

@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import br.com.goodmann.publisherrabbitmq.publisher.WhiteList;
 import br.com.goodmann.publisherrabbitmq.rabbitmq.Publisher;
 
@@ -14,7 +16,7 @@ class PublisherRabbitmqApplicationTests {
 	private Publisher publisher;
 
 	@Test
-	void add() {
+	void add() throws JsonProcessingException {
 		WhiteList w = new WhiteList();
 		w.setClient("cliente");
 		w.setRegex("qualquer");
