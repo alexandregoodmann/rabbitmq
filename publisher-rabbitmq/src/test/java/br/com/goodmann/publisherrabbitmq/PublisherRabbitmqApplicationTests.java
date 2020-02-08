@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import br.com.goodmann.publisherrabbitmq.publisher.Validation;
 import br.com.goodmann.publisherrabbitmq.publisher.WhiteList;
 import br.com.goodmann.publisherrabbitmq.rabbitmq.Publisher;
 
@@ -24,8 +25,12 @@ class PublisherRabbitmqApplicationTests {
 	}
 
 	@Test
-	void validate() {
-		this.publisher.validate("Validando mensagem");
+	void validate() throws JsonProcessingException {
+		Validation val = new Validation();
+		val.setClient("cliente");
+		val.setCorralationId(1);
+		val.setUrl("google.com");
+		this.publisher.validate(val);
 	}
 
 }

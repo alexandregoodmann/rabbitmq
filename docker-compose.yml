@@ -1,5 +1,6 @@
-version: '3'
+version: '3.7'
 services:
+
   publisher:
     build: publisher-rabbitmq/
     ports:
@@ -10,10 +11,12 @@ services:
     
   consumer:
     build: consumer-rabbitmq/
+    restart: on-failure
     ports:
       - "8081:8081"
     depends_on:
       - rabbitmq
+      - db
     network_mode: "host"
     
   rabbitmq:
@@ -21,3 +24,13 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+      
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: rabbitmq
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: mysql

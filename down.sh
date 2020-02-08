@@ -1,2 +1,0 @@
-docker-compose down
-docker rmi rabbitmq_publisher rabbitmq_consumer

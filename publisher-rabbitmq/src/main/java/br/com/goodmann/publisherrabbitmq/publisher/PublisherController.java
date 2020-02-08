@@ -15,8 +15,14 @@ public class PublisherController {
 	@Autowired
 	private Publisher publisher;
 
-	@PostMapping
+	@PostMapping("/add")
 	public void add(@RequestBody WhiteList obj) throws JsonProcessingException {
 		this.publisher.add(obj);
 	}
+
+	@PostMapping("/validate")
+	public void validate(@RequestBody Validation obj) throws JsonProcessingException {
+		this.publisher.validate(obj);
+	}
+
 }

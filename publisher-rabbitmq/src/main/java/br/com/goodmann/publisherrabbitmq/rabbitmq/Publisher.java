@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.goodmann.publisherrabbitmq.publisher.Validation;
 import br.com.goodmann.publisherrabbitmq.publisher.WhiteList;
 
 @Component
@@ -33,9 +34,9 @@ public class Publisher {
 		logger.info("[PUBLISHER] - ADD: " + mapper.writeValueAsString(obj));
 	}
 
-	public void validate(String msg) {
-		amqpTemplate.convertAndSend(this.validationQueue, msg);
-		logger.info("[PUBLISHER] - VALIDATE: " + msg);
+	public void validate(Validation obj) throws JsonProcessingException {
+		amqpTemplate.convertAndSend(this.validationQueue, obj);
+		logger.info("[PUBLISHER] - VALIDATE: " + mapper.writeValueAsString(obj));
 	}
 
 }
