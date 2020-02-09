@@ -21,14 +21,13 @@ public class ValidationService {
 
 	public static final Logger logger = LoggerFactory.getLogger(ValidationService.class);
 
-	private ObjectMapper mapper = new ObjectMapper();
+	@Autowired
+	private ObjectMapper mapper;
 
 	@Autowired
 	private WhiteListRepository repo;
 
 	public Response validateUrl(Validation model) throws JsonProcessingException {
-
-		logger.info("[CONSUMER] Validar Url: " + model.getUrl());
 
 		List<WhiteList> list = null;
 

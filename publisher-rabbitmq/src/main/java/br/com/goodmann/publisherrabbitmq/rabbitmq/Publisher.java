@@ -18,7 +18,8 @@ public class Publisher {
 
 	public static final Logger logger = LoggerFactory.getLogger(Publisher.class);
 
-	private ObjectMapper mapper = new ObjectMapper();
+	@Autowired
+	private ObjectMapper mapper;
 
 	@Autowired
 	private AmqpTemplate amqpTemplate;

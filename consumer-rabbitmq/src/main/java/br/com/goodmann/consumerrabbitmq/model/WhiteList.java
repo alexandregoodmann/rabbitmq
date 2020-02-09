@@ -52,5 +52,4 @@ public class WhiteList {
 	public void setRegex(String regex) {
 		this.regex = regex;
 	}
-
 }
