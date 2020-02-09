@@ -29,12 +29,12 @@ public class RabbitConfiguration {
 
 	@Bean
 	Queue insertQueue() {
-		return new Queue(insertQueue, false);
+		return new Queue(insertQueue, true);
 	}
 
 	@Bean
 	Queue validationQueue() {
-		return new Queue(validationQueue, false);
+		return new Queue(validationQueue, true);
 	}
 
 	@Bean

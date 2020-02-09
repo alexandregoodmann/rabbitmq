@@ -23,7 +23,10 @@ public class Consumer {
 	public static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
 	@Value("${RESPONSE_ROUTING_KEY}")
-	private String responseKey;
+	private String routingKey;
+
+	@Value("${RESPONSE_EXCHANGE}")
+	private String exchange;
 
 	@Autowired
 	private ObjectMapper mapper;
@@ -50,7 +53,8 @@ public class Consumer {
 		Response response = this.service.validateUrl(obj);
 
 		logger.info("[CONSUMER] Enviar Response");
-		this.amqpTemplate.convertAndSend(responseKey, response);
+		// this.amqpTemplate.convertAndSend(routingKey, response);
+		this.amqpTemplate.convertAndSend(exchange, routingKey, response);
 	}
 
 }

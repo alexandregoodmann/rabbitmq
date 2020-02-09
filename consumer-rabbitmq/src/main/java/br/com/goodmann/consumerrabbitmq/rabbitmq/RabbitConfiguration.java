@@ -20,7 +20,7 @@ public class RabbitConfiguration {
 	private String responseQueue;
 
 	@Value("${RESPONSE_ROUTING_KEY}")
-	private String responseKey;
+	private String routingKey;
 
 	@Bean
 	DirectExchange exchange() {
@@ -29,12 +29,12 @@ public class RabbitConfiguration {
 
 	@Bean
 	Queue responseQueue() {
-		return new Queue(this.responseQueue, false);
+		return new Queue(this.responseQueue, true);
 	}
 
 	@Bean
 	Binding responseBinding(Queue responseQueue, DirectExchange exchange) {
-		return BindingBuilder.bind(responseQueue).to(exchange).with(responseKey);
+		return BindingBuilder.bind(responseQueue).to(exchange).with(routingKey);
 	}
 
 	@Bean
