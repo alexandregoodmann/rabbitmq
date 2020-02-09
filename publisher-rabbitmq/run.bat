@@ -1,1 +1,0 @@
-mvn spring-boot:run -DskipTests=true

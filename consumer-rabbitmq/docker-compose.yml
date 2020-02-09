@@ -1,23 +1,27 @@
 version: '3.7'
 services:
 
-  publisher:
-    build: publisher-rabbitmq/
-    ports:
-      - "8080:8080"
-    depends_on:
-      - rabbitmq
-    network_mode: "host"
-    
-#  consumer:
-#    build: consumer-rabbitmq/
-#    restart: on-failure
+#  publisher:
+#    build: publisher-rabbitmq/
 #    ports:
-#      - "8081:8081"
+#      - "8080:8080"
 #    depends_on:
 #      - rabbitmq
-#      - db
 #    network_mode: "host"
+    
+  consumer:
+    build:
+      context: . 
+      dockerfile: Dockerfile 
+      args:
+        RABBITMQ_PORT: 5672
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+      - db
+    network_mode: "host"
     
   rabbitmq:
     image: rabbitmq:management
