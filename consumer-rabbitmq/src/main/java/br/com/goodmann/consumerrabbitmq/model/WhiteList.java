@@ -1,4 +1,4 @@
-package br.com.goodmann.consumerrabbitmq.whitelist;
+package br.com.goodmann.consumerrabbitmq.model;
 
 import java.math.BigInteger;
 /*
@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,6 +26,7 @@ public class WhiteList {
 
 	private String client;
 
+	@NotNull
 	private String regex;
 
 	public BigInteger getId() {

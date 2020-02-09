@@ -9,15 +9,15 @@ services:
       - rabbitmq
     network_mode: "host"
     
-  consumer:
-    build: consumer-rabbitmq/
-    restart: on-failure
-    ports:
-      - "8081:8081"
-    depends_on:
-      - rabbitmq
-      - db
-    network_mode: "host"
+#  consumer:
+#    build: consumer-rabbitmq/
+#    restart: on-failure
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - rabbitmq
+#      - db
+#    network_mode: "host"
     
   rabbitmq:
     image: rabbitmq:management

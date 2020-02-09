@@ -1,0 +1,2 @@
+docker stop rabbitmq_consumer_1
+docker start rabbitmq_consumer_1

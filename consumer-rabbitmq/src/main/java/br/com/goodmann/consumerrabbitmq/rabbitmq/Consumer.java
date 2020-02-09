@@ -9,14 +9,18 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.goodmann.consumerrabbitmq.whitelist.WhiteList;
-import br.com.goodmann.consumerrabbitmq.whitelist.WhiteListRepository;
+import br.com.goodmann.consumerrabbitmq.model.Validation;
+import br.com.goodmann.consumerrabbitmq.model.WhiteList;
+import br.com.goodmann.consumerrabbitmq.repository.WhiteListRepository;
+import br.com.goodmann.consumerrabbitmq.service.ValidationService;
 
 @Component
 public class Consumer {
 
 	@Autowired
 	private WhiteListRepository repo;
+	
+	@Autowired ValidationService service;
 
 	public static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
@@ -24,14 +28,17 @@ public class Consumer {
 
 	@RabbitListener(queues = "${INSERTION_QUEUE}")
 	public void receivedInsertionMessage(WhiteList obj) throws JsonProcessingException {
+		
 		logger.info("[CONSUMER] - ADD: " + mapper.writeValueAsString(obj));
+		
 		this.repo.save(obj);
+		
 		logger.info("[CONSUMER] - SALVO OBJETO");
 	}
 
 	@RabbitListener(queues = "${VALIDATION_QUEUE}")
-	public void receivedValidationMessage(String msg) {
-		logger.info("[SUBSCRIBER - Mensagem do VALIDATION_QUEUE] - " + msg);
+	public void receivedValidationMessage(Validation obj) throws JsonProcessingException {
+		this.service.validateUrl(obj);
 	}
 
 }
