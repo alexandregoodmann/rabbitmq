@@ -1,16 +1,16 @@
-version: '3.7'
+version: '3.3'
 services:
 
-#  publisher:
-#    build: publisher-rabbitmq/
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - rabbitmq
-#    network_mode: "host"
+  publisher:
+    build: publisher-rabbitmq/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+    network_mode: "host"
     
   consumer:
-    build: .
+    build: consumer-rabbitmq/
     restart: on-failure
     ports:
       - "8081:8081"
@@ -38,7 +38,7 @@ services:
     network_mode: "host"
     
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -52,5 +52,5 @@ services:
       MYSQL_USER: mysql
       MYSQL_PASSWORD: mysql
       MYSQL_ROOT_PASSWORD: mysql
-    #volumes:
-    # - ./database:/var/lib/mysql
+    volumes:
+     - ./database:/var/lib/mysql

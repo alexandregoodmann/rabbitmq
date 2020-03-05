@@ -1,1 +1,0 @@
-docker restart consumer-rabbitmq_consumer_1
