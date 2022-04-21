@@ -7,46 +7,63 @@ services:
       - "8080:8080"
     depends_on:
       - rabbitmq
-    network_mode: "host"
-    
+      - db
+    links:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=192.168.128.3
+      - RABBITMQ_VHOST=/
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - INSERTION_QUEUE=insertion.queue
+      - VALIDATION_QUEUE=validation.queue
+    networks:
+      - main
+          
   consumer:
     build: consumer-rabbitmq/
     restart: on-failure
     ports:
       - "8081:8081"
     environment:
-      #RABBITMQ
-      - RABBITMQ_HOST=localhost
+      - RABBITMQ_HOST=192.168.128.3
       - RABBITMQ_VHOST=/
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
-      #MYSQL
-      - JDBC_URL=jdbc:mysql://localhost:3306/rabbitmq?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      - JDBC_URL=jdbc:mysql://db:3306/rabbitmq?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
       - MYSQL_USER=mysql
       - MYSQL_PASSWORD=mysql
-      #QUEUE
       - INSERTION_QUEUE=insertion.queue
       - VALIDATION_QUEUE=validation.queue
       - RESPONSE_EXCHANGE=response.exchange
       - RESPONSE_QUEUE=response.queue
-      - RESPONSE_ROUTING_KEY=response.key
-      
+      - RESPONSE_ROUTING_KEY=response.key     
     depends_on:
       - rabbitmq
       - db
-    network_mode: "host"
-    
+    links:
+      - db
+    networks:
+      - main
+          
   rabbitmq:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
+    expose:
+      - "5672"  
+    networks:
+      - main
       
   db:
     image: mysql:5.7
     ports:
       - "3306:3306"
+    expose:
+      - "3306"
     environment:
       MYSQL_DATABASE: rabbitmq
       MYSQL_USER: mysql
@@ -54,3 +71,8 @@ services:
       MYSQL_ROOT_PASSWORD: mysql
     volumes:
      - ./database:/var/lib/mysql
+    networks:
+      - main
+           
+networks:
+  main:
