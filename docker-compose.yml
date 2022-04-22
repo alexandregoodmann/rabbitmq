@@ -1,33 +1,48 @@
 version: '3.3'
 services:
-
+#-------------------------------------------------------------------------                
+  db:
+    image: mysql:5.7
+    ports: 
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: rabbitmq
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: mysql
+    volumes: 
+      - ./database:/var/lib/mysql
+#-------------------------------------------------------------------------          
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    ports:
+#      - '5672:5672'
+#      - '15672:15672'
+#-------------------------------------------------------------------------
   publisher:
     build: publisher-rabbitmq/
     ports:
-      - "8080:8080"
-    depends_on:
-      - rabbitmq
-      - db
-    links:
-      - rabbitmq
+      - '8080:8080'
     environment:
-      - RABBITMQ_HOST=192.168.128.3
+      - RABBITMQ_HOST=172.30.0.2
       - RABBITMQ_VHOST=/
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
       - INSERTION_QUEUE=insertion.queue
       - VALIDATION_QUEUE=validation.queue
-    networks:
-      - main
-          
+      - REQUEST_EXCHANGE=request.exchange
+#    depends_on:
+#      rabbitmq: 
+#        condition: service_started
+#-------------------------------------------------------------------------
   consumer:
     build: consumer-rabbitmq/
     restart: on-failure
     ports:
-      - "8081:8081"
+      - '8081:8081'
     environment:
-      - RABBITMQ_HOST=192.168.128.3
+      - RABBITMQ_HOST=172.30.0.2
       - RABBITMQ_VHOST=/
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=guest
@@ -41,38 +56,9 @@ services:
       - RESPONSE_QUEUE=response.queue
       - RESPONSE_ROUTING_KEY=response.key     
     depends_on:
-      - rabbitmq
-      - db
-    links:
-      - db
-    networks:
-      - main
-          
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    expose:
-      - "5672"  
-    networks:
-      - main
-      
-  db:
-    image: mysql:5.7
-    ports:
-      - "3306:3306"
-    expose:
-      - "3306"
-    environment:
-      MYSQL_DATABASE: rabbitmq
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql
-      MYSQL_ROOT_PASSWORD: mysql
-    volumes:
-     - ./database:/var/lib/mysql
-    networks:
-      - main
-           
-networks:
-  main:
+      db: 
+        condition: service_started
+#      rabbitmq: 
+#        condition: service_started
+      publisher:
+        condition: service_started 
