@@ -1,0 +1,22 @@
+server.port=8081
+
+spring.rabbitmq.host=${RABBITMQ_HOST}
+spring.rabbitmq.port=${RABBITMQ_PORT}
+spring.rabbitmq.username=${RABBITMQ_USERNAME}
+spring.rabbitmq.password=${RABBITMQ_PASSWORD}
+
+INSERTION_QUEUE=${INSERTION_QUEUE}
+VALIDATION_QUEUE=${VALIDATION_QUEUE}
+RESPONSE_EXCHANGE=${RESPONSE_EXCHANGE}
+RESPONSE_QUEUE=${RESPONSE_QUEUE}
+RESPONSE_ROUTING_KEY=${RESPONSE_ROUTING_KEY}
+
+spring.datasource.url=${JDBC_URL}
+spring.datasource.username=${MYSQL_USER}
+spring.datasource.password=${MYSQL_PASSWORD}
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.hibernate.ddl-auto = update
+
+logging.level.org.hibernate.SQL= DEBUG
+
+spring.datasource.initialization-mode=always
