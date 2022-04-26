@@ -1,64 +1,12 @@
-version: '3.3'
 services:
-#-------------------------------------------------------------------------                
-  db:
-    image: mysql:5.7
-    ports: 
-      - '3306:3306'
-    environment:
-      MYSQL_DATABASE: rabbitmq
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql
-      MYSQL_ROOT_PASSWORD: mysql
-    volumes: 
-      - ./database:/var/lib/mysql
 #-------------------------------------------------------------------------          
-#  rabbitmq:
-#    image: rabbitmq:3-management
-#    ports:
-#      - '5672:5672'
-#      - '15672:15672'
-#-------------------------------------------------------------------------
-  publisher:
-    build: publisher-rabbitmq/
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
     ports:
-      - '8080:8080'
-    environment:
-      - RABBITMQ_HOST=172.30.0.2
-      - RABBITMQ_VHOST=/
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-      - INSERTION_QUEUE=insertion.queue
-      - VALIDATION_QUEUE=validation.queue
-      - REQUEST_EXCHANGE=request.exchange
-#    depends_on:
-#      rabbitmq: 
-#        condition: service_started
-#-------------------------------------------------------------------------
-  consumer:
-    build: consumer-rabbitmq/
-    restart: on-failure
-    ports:
-      - '8081:8081'
-    environment:
-      - RABBITMQ_HOST=172.30.0.2
-      - RABBITMQ_VHOST=/
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-      - JDBC_URL=jdbc:mysql://db:3306/rabbitmq?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
-      - MYSQL_USER=mysql
-      - MYSQL_PASSWORD=mysql
-      - INSERTION_QUEUE=insertion.queue
-      - VALIDATION_QUEUE=validation.queue
-      - RESPONSE_EXCHANGE=response.exchange
-      - RESPONSE_QUEUE=response.queue
-      - RESPONSE_ROUTING_KEY=response.key     
-    depends_on:
-      db: 
-        condition: service_started
-#      rabbitmq: 
-#        condition: service_started
-      publisher:
-        condition: service_started 
+      - 5672:5672
+      - 15672:15672
+    environment: 
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
