@@ -1,13 +1,10 @@
 package br.com.goodmann.publisherrabbitmq;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,12 +26,12 @@ public class SendMessageTest {
 
 	@Test
 	public void SendDirectTest() throws Exception {
-		
-		Message msg = new Message();
-		msg.setMessage("First Message");
-		
-		this.publisherService.sendToAdmin(msg);
+
 		/*
+		Message msg = Message
+		msg.setMessage("First Message");
+
+		this.publisherService.sendToAdmin(msg);
 		 * 
 		 * MockHttpServletRequestBuilder mockRequest =
 		 * MockMvcRequestBuilders.post("/admin")
@@ -43,6 +40,6 @@ public class SendMessageTest {
 		 * 
 		 * mockMvc.perform(mockRequest).andExpect(MockMvcResultMatchers.status().isOk())
 		 * ;
-		 */	}
+		 */ }
 
 }

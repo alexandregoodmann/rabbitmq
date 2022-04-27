@@ -20,4 +20,9 @@ public class PublisherController {
 		this.publisherService.sendToAdmin(message);
 	}
 
+	@PostMapping("/direct")
+	public void sendTo(@RequestBody Message message) throws JsonProcessingException {
+		this.publisherService.sendTo(message);
+	}
+
 }

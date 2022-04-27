@@ -2,7 +2,12 @@ package br.com.goodmann.publisherrabbitmq.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.Binding.DestinationType;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +27,27 @@ public class PublisherService {
 	@Autowired
 	private AmqpTemplate amqpTemplate;
 
+	@Autowired
+	private AmqpAdmin amqpAdmin;
+
+	@Autowired
+	private DirectExchange goodmannExchange;
+
 	public void sendToAdmin(Message message) throws JsonProcessingException {
-		amqpTemplate.convertAndSend("goodmann_exchange", "admin_RoutingKey", message);
+		amqpTemplate.convertAndSend(this.goodmannExchange.getName(), "admin_RoutingKey", message);
 		logger.info("[PUBLISHER] - ADD: " + mapper.writeValueAsString(message));
+	}
+
+	public void sendTo(Message message) throws JsonProcessingException {
+
+		Queue queue = new Queue(message.getTo(), true);
+		Binding binding = new Binding(message.getTo(), DestinationType.QUEUE, this.goodmannExchange.getName(), message.getTo(), null);
+		this.amqpAdmin.declareQueue(queue);
+		this.amqpAdmin.declareBinding(binding);
+		
+		amqpTemplate.convertAndSend(this.goodmannExchange.getName(), message.getTo(), message);
+		
+		logger.info("[PUBLISHER] - Send To: " + mapper.writeValueAsString(message));
 	}
 
 }

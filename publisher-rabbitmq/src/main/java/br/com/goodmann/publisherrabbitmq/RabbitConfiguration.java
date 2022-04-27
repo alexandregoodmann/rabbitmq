@@ -1,20 +1,34 @@
 package br.com.goodmann.publisherrabbitmq;
 
+import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfiguration {
 
+	public static final String GOODMANN_EXCHANGE = "goodmann_exchange";
+	
+	@Autowired
+	private ConnectionFactory connectionFactory;
+
 	@Bean
-	DirectExchange exchange() {
-		return new DirectExchange("goodmann_exchange");
+	DirectExchange goodmannExchange() {
+		return new DirectExchange(GOODMANN_EXCHANGE);
+	}
+	
+	@Bean
+	public AmqpAdmin amqpAdmin() {
+	    return new RabbitAdmin(connectionFactory);
 	}
 
 	@Bean
@@ -23,8 +37,8 @@ public class RabbitConfiguration {
 	}
 
 	@Bean
-	Binding directBinding(Queue adminQueue, DirectExchange exchange) {
-		return BindingBuilder.bind(adminQueue).to(exchange).with("admin_RoutingKey");
+	Binding directBinding(Queue adminQueue, DirectExchange goodmannExchange) {
+		return BindingBuilder.bind(adminQueue).to(goodmannExchange).with("admin_RoutingKey");
 	}
 
 	@Bean
