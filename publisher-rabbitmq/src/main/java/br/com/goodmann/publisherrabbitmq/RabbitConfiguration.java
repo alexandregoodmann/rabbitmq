@@ -19,7 +19,7 @@ public class RabbitConfiguration {
 
 	@Bean
 	Queue adminQueue() {
-		return new Queue("admin_queue", true, false, false);
+		return new Queue("admin_queue", true);
 	}
 
 	@Bean

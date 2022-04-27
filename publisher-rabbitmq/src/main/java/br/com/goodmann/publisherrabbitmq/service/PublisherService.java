@@ -4,14 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.goodmann.publisherrabbitmq.controller.Message;
 
-@Service
+@Component
 public class PublisherService {
 
 	public static final Logger logger = LoggerFactory.getLogger(PublisherService.class);
@@ -23,7 +23,7 @@ public class PublisherService {
 	private AmqpTemplate amqpTemplate;
 
 	public void sendToAdmin(Message message) throws JsonProcessingException {
-		amqpTemplate.convertAndSend("admin_RoutingKey", message);
+		amqpTemplate.convertAndSend("goodmann_exchange", "admin_RoutingKey", message);
 		logger.info("[PUBLISHER] - ADD: " + mapper.writeValueAsString(message));
 	}
 
